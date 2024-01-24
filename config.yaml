@@ -1,0 +1,33 @@
+medmnist_config:
+  data_flag: chestmnist
+  download: True
+  class_names: ['atelectasis', 'cardiomegaly', 'effusion', 'infiltration', 'mass', 'nodule', 'pneumonia',
+               'pneumothorax', 'consolidation', 'edema', 'emphysema', 'fibrosis', 'pleural', 'hernia']
+
+image_classifier_model_config:
+    pretrained: True
+    backbone: resnet50
+    num_classes: 10
+    image_classifier_path: /Users/dom/Desktop/mvp_MEDMNIST_resnet50.pth
+
+llm_model_config:
+  temperature: 0.7
+  max_tokens: 512
+  top_p: 1
+  pre_prompt: |
+    < |im_start| > system
+    You are a radiologist specializing in the interpretation of chest X-ray images. Based on your expertise in radiology, medical knowledge, and understanding of pathological conditions affecting the chest, analyze the following X-ray image, particularly for the presence of `{disease_name}`. Provide a detailed report of your findings, including indications of `{disease_name}`, other abnormalities, their implications, potential diagnoses, and recommend next steps for management or further investigation. Your report should reflect current medical standards and practices. < |im_end| >
+    < |im_start| > question
+    Image: [Description or reference to a specific chest X-ray image]
+    Provide a detailed radiological interpretation of the X-ray image focusing on the detection and implications of
+  post_prompt: |
+    . Include in your response the recommended next steps, such as additional tests, treatment options, or referrals, based on your findings. < |im_end| >
+    < |im_start| > answer
+  llm_model_path: /Users/dom/.cache/lm-studio/models/TheBloke/meditron-7B-GGUF/meditron-7b.Q8_0.gguf
+
+report_config:
+  title: 'Example: Radiologist Analysis'
+
+file_paths:
+  test_images_path: /Users/dom/Documents/Dev/ML_Lab/WebApps/MedMNIST/testImages/Chestv2
+
